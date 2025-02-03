@@ -1,33 +1,29 @@
-# .github/workflows/ci.yml
-name: CI/CD
+# .github/workflows/deploy.yml
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - master  # change to your default branch if different (e.g. main)
+      - main  # or main, depending on your default branch
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v2
-
+      
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'  # specify the Node.js version
+          node-version: '14'  # Specify your Node.js version
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm install
 
       - name: Build
         run: npm run build
 
-      - name: Deploy to Vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} # Optional if you have teams
-        run: npm install -g vercel && vercel --prod --token $VERCEL_TOKEN
+      - name: Deploy to GitHub Pages
+        run: npm run deploy
